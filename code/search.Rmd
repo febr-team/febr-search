@@ -112,12 +112,14 @@ datatable(
 
 ^1^ Código de identificação do conjunto de dados com link para a sua página no catálogo do ***febr***. ^2^ Título do conjunto de dados. ^3^ Nome da primeira pessoa autora/responsável. ^4^ Nome da primeira organização autora/responsável. ^5^ Unidade da federação com o maior número de observações. ^6^ Número total de observações. ^7^ Termos identificadores ou palavras-chave. ^8^ Área do conhecimento da Ciência do Solo segundo CAPES e CNPq.
 
-### Contribua você também {-}
+<hr>
 
-Olá! Esse é o ambiente de desenvolvimento da *busca de dados* do Repositório Brasileiro Livre para Dados 
-Abertos do Solo, também conhecido como **febr**. Sinta-se à vontade para propor melhorias e estudar o código 
-fonte. Afinal de contas, o **febr** é um repositório livre!
+#### Melhorias e Correções {-}
 
-### Sugestões, Dúvidas e Reclamações {-}
+Encontrou um problema ou erro nos dados? Acesse o conjunto de dados e proponha as melhorias e correções necessárias. Afinal de contas, o ***febr*** é um repositório livre de dados abertos!
 
-Por favor, sinta-se à vontade para entrar em contato conosco via febr-forum@googlegroups.com. Nós faremos o possível para responder em até 24 horas.
+<hr>
+
+#### Sugestões, Dúvidas e Reclamações {-}
+
+Você tem alguma sugestão, dúvida ou reclamação sobre o ***febr***? Sinta-se à vontade para entrar em contato conosco via febr-forum@googlegroups.com. Nós faremos o possível para responder em até 24 horas.
