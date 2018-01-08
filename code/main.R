@@ -1,10 +1,10 @@
 # Render site
 
 # Processar arquivo Rmd e gerar saída em HTML
-rmarkdown::render('code/search.Rmd', encoding = 'UTF-8')
+rmarkdown::render('code/search.Rmd', encoding = 'UTF-8', output_dir = 'docs/')
 
 # Editar arquivo HTML
-con <- 'code/search.html'
+con <- 'docs/search.html'
 file <- readLines(con = con)
 for (i in seq(length(file))) {
   
