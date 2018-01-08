@@ -13,7 +13,7 @@ library(googlesheets)
 ```
 
 <a href="http://www.ufsm.br/febr/" target="_blank">
-  <img src="img/logo.png" style="border:none;max-width:100%;">
+  <img src="logo.png" style="border:none;max-width:100%;">
 </a>
 
 ```{r, eval=FALSE}
@@ -111,6 +111,12 @@ datatable(
 ```
 
 ^1^ Código de identificação do conjunto de dados com link para a sua página no catálogo do ***febr***. ^2^ Título do conjunto de dados. ^3^ Nome da primeira pessoa autora/responsável. ^4^ Nome da primeira organização autora/responsável. ^5^ Unidade da federação com o maior número de observações. ^6^ Número total de observações. ^7^ Termos identificadores ou palavras-chave. ^8^ Área do conhecimento da Ciência do Solo segundo CAPES e CNPq.
+
+### Contribua você também {-}
+
+Olá! Esse é o ambiente de desenvolvimento da *busca de dados* do Repositório Brasileiro Livre para Dados 
+Abertos do Solo, também conhecido como **febr**. Sinta-se à vontade para propor melhorias e estudar o código 
+fonte. Afinal de contas, o **febr** é um repositório livre!
 
 ### Sugestões, Dúvidas e Reclamações {-}
 
