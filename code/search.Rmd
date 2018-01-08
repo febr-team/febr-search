@@ -1,12 +1,6 @@
 ---
-# title: "febr -- Busca de Conjuntos de Dados"
-# subtitle: "Encontre o conjunto de dados abertos que você precisa para desenvolver seu estudo. Conheça outros conjuntos de dados e veja como estão relacionados ao estudo que você pretende desenvolver."
-output: 
-  html_document:
-    css: style.css
+output: html_document
 ---
-
-<!-- <hr> -->
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -18,12 +12,8 @@ library(dplyr)
 library(googlesheets)
 ```
 
-```{r}
-# knitr::include_graphics('logo.png')
-```
-
 <a href="http://www.ufsm.br/febr/" target="_blank">
-<img src="logo.png" style="border:none;max-width:100%;">
+  <img src="img/logo.png" style="border:none;max-width:100%;">
 </a>
 
 ```{r, eval=FALSE}
@@ -68,7 +58,6 @@ colnames(tmp_dts) <- c(dts_rows, "area_conhecimento", "autor_nome", "organizacao
 ```
 
 ```{r}
-# link <- glue('https://drive.google.com/drive/folders/{sheets_keys$compartilha}')
 link <- glue('http://www.ufsm.br/febr/catalog/{tmp_dts$dataset_id}.html')
 tmp_dts$dataset_id <- glue("<a href='{link}' target='_blank'>{tmp_dts$dataset_id}</a>")
 ```
