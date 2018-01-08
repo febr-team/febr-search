@@ -1,0 +1,128 @@
+---
+# title: "febr -- Busca de Conjuntos de Dados"
+# subtitle: "Encontre o conjunto de dados abertos que você precisa para desenvolver seu estudo. Conheça outros conjuntos de dados e veja como estão relacionados ao estudo que você pretende desenvolver."
+output: 
+  html_document:
+    css: style.css
+---
+
+<!-- <hr> -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(magrittr)
+library(stringr)
+library(DT)
+library(glue)
+library(dplyr)
+library(googlesheets)
+```
+
+```{r}
+# knitr::include_graphics('logo.png')
+```
+
+<a href="http://www.ufsm.br/febr/" target="_blank">
+<img src="logo.png" style="border:none;max-width:100%;">
+</a>
+
+```{r, eval=FALSE}
+# Descarregar informações sobre as unidades federativas do Brasil
+estado_id <-
+  gs_key('1bTIcFLpnOefYs_BaegPC59kbF3gEugOXpYpnfyrDsDQ') %>% 
+  gs_read_csv(verbose = FALSE)
+save(estado_id, file = '../data/estado_id.rda')
+```
+
+```{r}
+load('../data/estado_id.rda')
+load('../data/dts.rda')
+load('../data/obs.rda')
+obs <- obs[-107]
+```
+
+```{r}
+dts_rows <- c("dataset_id", "dataset_titulo", "palavras_chave") 
+x <- dts[[1]]
+tmp_dts <- 
+  sapply(dts, function (x) {
+    i1 <- match(dts_rows, x[[1]])
+    x1 <- x[i1, 2]
+    
+    # Manter apenas a primeira área do conhecimento
+    i2 <- match("area_conhecimento", x[[1]])
+    x2 <- x[i2, 2] %>% str_split_fixed(pattern = ";", n = Inf)
+    
+    # Manter apenas o primeiro autor
+    i3 <- match("autor_nome", x[[1]])
+    x3 <- x[i3, 2] %>% str_split_fixed(pattern = ";", n = Inf)
+    
+    # Manter apenas a primeira instituição
+    i4 <- match("organizacao_nome", x[[1]])
+    x4 <- x[i4, 2] %>% str_split_fixed(pattern = ";", n = Inf)
+    
+    c(x1[[1]], x2[1], x3[1], x4[1])
+  })
+tmp_dts <- t(tmp_dts) %>% data.frame()
+colnames(tmp_dts) <- c(dts_rows, "area_conhecimento", "autor_nome", "organizacao_nome")
+```
+
+```{r}
+# link <- glue('https://drive.google.com/drive/folders/{sheets_keys$compartilha}')
+link <- glue('http://www.ufsm.br/febr/catalog/{tmp_dts$dataset_id}.html')
+tmp_dts$dataset_id <- glue("<a href='{link}' target='_blank'>{tmp_dts$dataset_id}</a>")
+```
+
+```{r}
+tmp_obs <-
+  lapply(obs, function (x) {
+    
+    # Substituir a sigla dos estados pelo seu nome
+    uf <- as.factor(x[["estado_id"]]) %>% summary() %>% which.max() %>% names()
+    uf_id <- match(uf, estado_id$estado_id)
+    uf <- estado_id$estado_nome[uf_id]
+    
+    # Contar o número de observações
+    n <- nrow(x)
+    
+    data.frame(uf, n)
+  })
+tmp_obs <- do.call(rbind, tmp_obs)
+```
+
+```{r}
+tmp_dt <- cbind(tmp_dts, tmp_obs)
+col_order <- 
+  c("dataset_id", "dataset_titulo", "autor_nome", "organizacao_nome", "uf", "n", "palavras_chave",
+    "area_conhecimento")
+
+# Organizar linhas pelo número de observações
+tmp_dt <- 
+  tmp_dt[col_order] %>% 
+  arrange(desc(n))
+```
+
+```{r}
+datatable(
+  tmp_dt, rownames = FALSE, filter = 'top', escape = FALSE,
+  colnames = 
+    c('ID<sup>1</sup>', 'Título<sup>2</sup>', 'Autoria<sup>3</sup>', 'Organização<sup>4</sup>',
+      'Estado<sup>5</sup>', 'Observações<sup>6</sup>', 'Termos<sup>7</sup>', 'Área<sup>8</sup>'),
+  extensions = 'Buttons',
+  options = list(
+    search = list(regex = TRUE, caseInsensitive = FALSE),
+    dom = 'Bfrtip',
+    buttons = list(
+      list(extend = 'copy', buttons = 'copy', text = 'Copiar'),
+      list(extend = 'print', buttons = 'print', text = 'Imprimir'),
+      list(extend = 'csv', buttons = 'csv', text = 'Descarregar')
+      ),
+    pageLength = 7,
+    language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/Portuguese-Brasil.json')))
+```
+
+^1^ Código de identificação do conjunto de dados com link para a sua página no catálogo do ***febr***. ^2^ Título do conjunto de dados. ^3^ Nome da primeira pessoa autora/responsável. ^4^ Nome da primeira organização autora/responsável. ^5^ Unidade da federação com o maior número de observações. ^6^ Número total de observações. ^7^ Termos identificadores ou palavras-chave. ^8^ Área do conhecimento da Ciência do Solo segundo CAPES e CNPq.
+
+### Sugestões, Dúvidas e Reclamações {-}
+
+Por favor, sinta-se à vontade para entrar em contato conosco via febr-forum@googlegroups.com. Nós faremos o possível para responder em até 24 horas.
