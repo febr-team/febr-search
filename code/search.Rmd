@@ -16,24 +16,17 @@ library(googlesheets)
   <img src="logo.png" style="border:none;max-width:100%;">
 </a>
 
-```{r, eval=FALSE}
-# Descarregar informações sobre as unidades federativas do Brasil
-estado_id <-
-  gs_key('1bTIcFLpnOefYs_BaegPC59kbF3gEugOXpYpnfyrDsDQ') %>% 
-  gs_read_csv(verbose = FALSE)
-save(estado_id, file = '../data/estado_id.rda')
-```
-
 ```{r}
-load('../data/estado_id.rda')
-load('../data/dts.rda')
-load('../data/obs.rda')
-obs <- obs[-107]
+load('../../febr-data/data/uf.rda') # uf: data.frame
+load("../../febr-data/data/dts.rda") # dts: large list
+load("../../febr-data/data/obs.rda") # obs: large list
+# obs <- obs[-107]
+# febr::goto("ctb0659")
 ```
 
 ```{r}
 dts_rows <- c("dataset_id", "dataset_titulo", "palavras_chave") 
-x <- dts[[1]]
+# x <- dts[[1]]
 tmp_dts <- 
   sapply(dts, function (x) {
     i1 <- match(dts_rows, x[[1]])
@@ -51,7 +44,8 @@ tmp_dts <-
     i4 <- match("organizacao_nome", x[[1]])
     x4 <- x[i4, 2] %>% str_split_fixed(pattern = ";", n = Inf)
     
-    c(x1[[1]], x2[1], x3[1], x4[1])
+    # c(x1[[1]], x2[1], x3[1], x4[1])
+    c(x1, x2[1], x3[1], x4[1])
   })
 tmp_dts <- t(tmp_dts) %>% data.frame()
 colnames(tmp_dts) <- c(dts_rows, "area_conhecimento", "autor_nome", "organizacao_nome")
@@ -67,14 +61,14 @@ tmp_obs <-
   lapply(obs, function (x) {
     
     # Substituir a sigla dos estados pelo seu nome
-    uf <- as.factor(x[["estado_id"]]) %>% summary() %>% which.max() %>% names()
-    uf_id <- match(uf, estado_id$estado_id)
-    uf <- estado_id$estado_nome[uf_id]
+    estado <- as.factor(x[["estado_id"]]) %>% summary() %>% which.max() %>% names()
+    uf_id <- match(estado, uf$estado_id)
+    estado <- uf$estado_nome[uf_id]
     
     # Contar o número de observações
     n <- nrow(x)
     
-    data.frame(uf, n)
+    data.frame(estado, n)
   })
 tmp_obs <- do.call(rbind, tmp_obs)
 ```
@@ -82,7 +76,7 @@ tmp_obs <- do.call(rbind, tmp_obs)
 ```{r}
 tmp_dt <- cbind(tmp_dts, tmp_obs)
 col_order <- 
-  c("dataset_id", "dataset_titulo", "autor_nome", "organizacao_nome", "uf", "n", "palavras_chave",
+  c("dataset_id", "dataset_titulo", "autor_nome", "organizacao_nome", "estado", "n", "palavras_chave",
     "area_conhecimento")
 
 # Organizar linhas pelo número de observações
