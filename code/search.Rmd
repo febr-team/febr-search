@@ -18,14 +18,13 @@ library(googlesheets)
 
 ```{r}
 # Carregar dados do repositório-irmão `febr-data`
-load('../../febr-data/data/uf.rda')
-load('../../febr-data/data/dts.rda')
-load('../../febr-data/data/obs.rda')
+load('../../febr-data/data/uf.rda') # uf: data.frame
+load("../../febr-data/data/dts.rda") # dts: large list
+load("../../febr-data/data/obs.rda") # obs: large list
 ```
 
 ```{r}
 dts_rows <- c("dataset_id", "dataset_titulo", "palavras_chave")
-# x <- dts[[1]]
 tmp_dts <- 
   sapply(dts, function (x) {
     i1 <- match(dts_rows, x[[1]])
