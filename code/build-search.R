@@ -16,3 +16,6 @@ for (i in seq(length(file))) {
     gsub(pattern = 'placeholder=\\"All\\"', replacement = 'placeholder=\\"Todos\\"', x = file[i], fixed = TRUE)
 }
 writeLines(text = file, con = con)
+
+# Open server portal
+browseURL("http://www.suporte.cpd.ufsm.br/newftp/")
