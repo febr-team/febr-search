@@ -18,9 +18,9 @@ library(googlesheets)
 
 ```{r}
 # Carregar dados do repositório-irmão `febr-data`
-load('../../febr-data/data/uf.rda') # uf: data.frame
-load("../../febr-data/data/dts.rda") # dts: large list
-load("../../febr-data/data/obs.rda") # obs: large list
+load('../../febr-data/data/r/uf.rda') # uf: data.frame
+load("../../febr-data/data/r/dts.rda") # dts: large list
+load("../../febr-data/data/r/obs.rda") # obs: large list
 ```
 
 ```{r}
